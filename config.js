@@ -13,4 +13,4 @@ const sendgridConfig = {
 
 const interval = process.env.INTERVAL || 10 * 60 * 1000;
 
-module.export = { pocketConfig, sendgridConfig, interval };
+module.exports = { pocketConfig, sendgridConfig, interval };
