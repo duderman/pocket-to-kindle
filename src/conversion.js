@@ -1,10 +1,11 @@
 const { exec } = require('child_process');
 const path = require('path');
+require("promise.allsettled").shim();
 
 const AUTHOR = 'Pocket 2 Kindle';
 
 async function convertToMobi(articles) {
-  const promises = await Promise.all(articles.map(convertHtml));
+  const promises = await Promise.allSettled(articles.map(convertHtml));
   return new Promise((resolve) => {
     let fulfilledArticles = [];
     for ({ status, value } of promises) {
