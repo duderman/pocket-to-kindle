@@ -11,6 +11,4 @@ RUN yarn
 ADD src ./src
 ADD config.js ./
 
-RUN mkdir articles
-
 CMD ["node", "/app/src/index.js"]
