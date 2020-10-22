@@ -25,4 +25,5 @@ async function main() {
   }
 }
 
+main();
 setInterval(main, interval);
