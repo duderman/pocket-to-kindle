@@ -3,93 +3,48 @@ const fs = require('fs');
 
 const folderPath = './articles';
 
-
 async function createHtmlFiles(articles) {
-
-    clearArticlesFolder();
-
-    for (const article of articles)
-        await createHtmlFile(article);
-
-    return new Promise((resolve, reject) => {
-        createTableOfContentsFile(articles);
-        console.log('Created HTML files for your articles...');
-        resolve();
-    })
-    
+  clearArticlesFolder();
+  return Promise.all(articles.map(((article) => createHtmlFile(article))));
 }
 
 function createHtmlFile(article) {
-    
-    const {id, url, title} = article;
+  const {url, title, html} = article;
 
-    return new Promise((resolve, reject) => {
-        read(url, (err, page, meta) => {
-            if (err) throw err;
-            const htmlContent = page.content;
-            const html = `
-                <html>
-                <head>
-                    <meta charset="UTF-8">
-                </head>
-                <body>
-                    <h1>${title}</h1>
-                    ${htmlContent}
-                </body>
-                </html>
-            `;
-            fs.writeFileSync(`${folderPath}/article${id}.html`, html);
-            page.close();
-            resolve();
-        })
-    })
+  return new Promise((resolve, reject) => {
+    read(url, (err, page) => {
+      if (err) { return reject(error); }
 
-}
-
-
-function createTableOfContentsFile(articles) {
-
-    const files = getInputFiles();
-
-    let htmlToc = '';
-    files.forEach(file => {
-        const regex = /article(\d+).html/;
-        const fileId = file.match(regex)[1];
-        const article = articles.find(article => article.id == fileId);
-        htmlToc += `<p><a href="${file}">${article.title}</a></p>`;
-    })
-    
-    const html = `
+      const pageContent = page.content;
+      const fileName = title;
+      const htmlContent = `
         <html>
         <head>
-            <meta charset="UTF-8">
+          <meta charset="UTF-8">
         </head>
         <body>
-            <h1>Table of Contents</h1>
-            ${htmlToc}
+          <h1>${title}</h1>
+          ${pageContent}
         </body>
         </html>
-    `;
-
-    fs.writeFileSync(`${folderPath}/index.html`, html);
-
+      `;
+      fs.writeFileSync(`${folderPath}/${html}`, htmlContent);
+      page.close();
+      console.log(`Converted article '${title}' from ${url}`)
+      resolve(article);
+    })
+  })
 }
-
 
 function clearArticlesFolder() {
-
+  if (!fs.existsSync(folderPath)) {
+    fs.mkdirSync(folderPath);
+  } else {
     const files = fs.readdirSync(folderPath);
     for (const file of files)
-            fs.unlinkSync(`${folderPath}/${file}`);
-            
+      fs.unlinkSync(`${folderPath}/${file}`);
+
+  }
 }
-
-function getInputFiles() {
-
-    const files = fs.readdirSync(folderPath);
-    return files;
-
-}
-
 
 module.exports = createHtmlFiles;

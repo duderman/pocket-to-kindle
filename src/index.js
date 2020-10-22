@@ -1,25 +1,30 @@
-const argv = require('yargs').argv;
-const getPocketArticles = require('./pocket.js');
+const { getPocketArticles, markAsRead } = require("./pocket.js");
 const createHtmlFiles = require('./html.js');
 const convertToMobi = require('./conversion.js');
-const sendMobiToKindle = require('./email.js');
+const sendToKindle = require("./email.js");
 
 
 async function main() {
-
-  const tag = argv.tag;
-  const title = argv.title;
-  
   try {
-    const articles = await getPocketArticles(tag);
-    await createHtmlFiles(articles);
-    await convertToMobi(title);
-    sendMobiToKindle();
-  } catch (err) {
-      console.log(err);
-  }
+    console.log('Starting...')
+    const articles1 = await getPocketArticles();
+    const articles = [articles1[0]]
 
+    if (!articles) {
+      console.log('Nothing to do here...')
+      return;
+    }
+
+    await createHtmlFiles(articles);
+    await convertToMobi(articles);
+    await sendToKindle(articles);
+    await markAsRead(articles);
+
+    console.log("All good :)\n\n")
+  } catch (err) {
+    console.log(err);
+  }
 }
 
-main();
-
+const INTERVAL = 10 * 60 * 1000;
+setInterval(main, INTERVAL);
