@@ -34,6 +34,10 @@ function generateTitle() {
 }
 
 async function markAsRead(articles) {
+  if (!articles) {
+    return;
+  }
+
   console.log("Marking all these articles as read...");
 
   const params = { ...pocketConfig, actions: buildActions(articles)}
