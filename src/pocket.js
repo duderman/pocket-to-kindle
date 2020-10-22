@@ -34,13 +34,9 @@ function generateTitle() {
 }
 
 async function markAsRead(articles) {
-  if (!articles) {
-    return;
-  }
+  console.log(`Marking all these articles (${articles.length}) as read...`);
 
-  console.log("Marking all these articles as read...");
-
-  const params = { ...pocketConfig, actions: buildActions(articles)}
+  const params = { ...pocketConfig, actions: buildActions(articles) };
   return axios.post(ARCHIVE_URL, params);
 }
 
@@ -56,6 +52,5 @@ function buildAction(article) {
     item_id: id
   }
 }
-
 
 module.exports = { getPocketArticles, markAsRead };
