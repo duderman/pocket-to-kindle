@@ -2,13 +2,12 @@ const { getPocketArticles, markAsRead } = require("./pocket.js");
 const createHtmlFiles = require('./html.js');
 const convertToMobi = require('./conversion.js');
 const sendToKindle = require("./email.js");
-
+const { interval } = require("../config.js");
 
 async function main() {
   try {
     console.log('Starting...')
-    const articles1 = await getPocketArticles();
-    const articles = [articles1[0]]
+    const articles = await getPocketArticles();
 
     if (!articles) {
       console.log('Nothing to do here...')
@@ -26,5 +25,4 @@ async function main() {
   }
 }
 
-const INTERVAL = 10 * 60 * 1000;
-setInterval(main, INTERVAL);
+setInterval(main, interval);

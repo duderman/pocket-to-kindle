@@ -11,5 +11,6 @@ const sendgridConfig = {
   kindle_address: process.env.KINDLE_ADDRESS,
 };
 
-module.exports.pocketConfig = pocketConfig;
-module.exports.sendgridConfig = sendgridConfig;
+const interval = process.env.INTERVAL || 10 * 60 * 1000;
+
+module.export = { pocketConfig, sendgridConfig, interval };
