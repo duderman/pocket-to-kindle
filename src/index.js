@@ -9,17 +9,16 @@ async function main() {
     console.log("Starting...");
     const articles = await getPocketArticles();
 
-    if (!articles) {
+    if (articles) {
+      await createHtmlFiles(articles);
+      const convertedArticles = await convertToMobi(articles);
+      await sendToKindle(convertedArticles);
+      await markAsRead(convertedArticles);
+
+      console.log("All good :)\n\n");
+    } else {
       console.log("Nothing to do here...");
-      return;
     }
-
-    await createHtmlFiles(articles);
-    const convertedArticles = await convertToMobi(articles);
-    await sendToKindle(convertedArticles);
-    await markAsRead(convertedArticles);
-
-    console.log("All good :)\n\n");
   } catch (err) {
     console.log(err);
   }
