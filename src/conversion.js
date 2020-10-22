@@ -25,7 +25,10 @@ function convertHtml(article) {
       command,
       { cwd: path.resolve("./articles") },
       err => {
-        if (err) { return reject(err); }
+        if (err) {
+          console.error(`Unable to create MOBI for article '${title}' :(`, err);
+          return reject(err);
+        }
 
         console.log(`MOBI file created for article '${title}`);
         resolve(article);
