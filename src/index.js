@@ -6,20 +6,20 @@ const { interval } = require("../config.js");
 
 async function main() {
   try {
-    console.log('Starting...')
+    console.log("Starting...");
     const articles = await getPocketArticles();
 
     if (!articles) {
-      console.log('Nothing to do here...')
+      console.log("Nothing to do here...");
       return;
     }
 
     await createHtmlFiles(articles);
-    await convertToMobi(articles);
-    await sendToKindle(articles);
-    await markAsRead(articles);
+    const convertedArticles = await convertToMobi(articles);
+    await sendToKindle(convertedArticles);
+    await markAsRead(convertedArticles);
 
-    console.log("All good :)\n\n")
+    console.log("All good :)\n\n");
   } catch (err) {
     console.log(err);
   }

@@ -4,7 +4,16 @@ const path = require('path');
 const AUTHOR = 'Pocket 2 Kindle';
 
 async function convertToMobi(articles) {
-  return Promise.all(articles.map((article) => convertHtml(article)));
+  const promises = await Promise.all(articles.map(convertHtml));
+  return new Promise((resolve) => {
+    let fulfilledArticles = [];
+    for ({ status, value } of promises) {
+      if (status === "fulfilled") {
+        fulfilledArticles.push(value);
+      }
+    }
+    resolve(fulfilledArticles);
+  });
 }
 
 function convertHtml(article) {
@@ -19,7 +28,7 @@ function convertHtml(article) {
         if (err) { return reject(err); }
 
         console.log(`MOBI file created for article '${title}`);
-        resolve();
+        resolve(article);
       }
     );
   });
