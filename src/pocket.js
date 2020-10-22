@@ -17,13 +17,14 @@ async function getPocketArticles() {
 }
 
 function buildArticle(article) {
-  const title = article.resolved_title || generateTitle();;
+  const title = article.resolved_title || generateTitle();
+  const id = article.resolved_id;
   return {
-    id: article.resolved_id,
+    id,
+    title,
     url: article.resolved_url,
-    title: title,
-    html: `${title}.html`,
-    mobi: `${title}.mobi`,
+    html: `${id}.html`,
+    mobi: `${id}.mobi`,
   };
 }
 

@@ -21,10 +21,10 @@ function buildAttachments(articles) {
 }
 
 function buildAttachment(article) {
-  const { mobi } = article;
+  const { mobi, title } = article;
   const file = fs.readFileSync(`./articles/${mobi}`);
   const base64File = file.toString('base64');
-  return { content: base64File, filename: mobi }
+  return { content: base64File, filename: `${title}.mobi` };
 }
 
 module.exports = sendToKindle;

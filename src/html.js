@@ -30,7 +30,7 @@ function createHtmlFile(article) {
       `;
       fs.writeFileSync(`${folderPath}/${html}`, htmlContent);
       page.close();
-      console.log(`Converted article '${title}' from ${url}`)
+      console.log(`HTML created for article '${title}' from ${url}`);
       resolve(article);
     })
   })
