@@ -1,5 +1,6 @@
 /node_modules/
-*.html
+articles
+.DS_Store
 *.mobi
 .env
 .yarn-error.log

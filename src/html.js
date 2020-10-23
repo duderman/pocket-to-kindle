@@ -1,22 +1,18 @@
-const read = require('node-readability');
+const read = require("read-art");
 const fs = require('fs');
 
-const folderPath = './articles';
-
-async function createHtmlFiles(articles) {
-  clearArticlesFolder();
-  return Promise.all(articles.map(((article) => createHtmlFile(article))));
-}
-
-function createHtmlFile(article) {
-  const {url, title, html} = article;
+async function toHtml(article) {
+  const { title, html, dir } = article;
 
   return new Promise((resolve, reject) => {
-    read(url, (err, page) => {
-      if (err) { return reject(error); }
+    const fileContent = fs.readFileSync(`${dir}/index.xhtml`).toString();
+    read(fileContent, (err, page) => {
+      if (err) {
+        console.error(`Error creating HTML for title '${title}'`, err);
+        return reject(err);
+      }
 
       const pageContent = page.content;
-      const fileName = title;
       const htmlContent = `
         <html>
         <head>
@@ -28,23 +24,13 @@ function createHtmlFile(article) {
         </body>
         </html>
       `;
-      fs.writeFileSync(`${folderPath}/${html}`, htmlContent);
-      page.close();
-      console.log(`HTML created for article '${title}' from ${url}`);
+
+      fs.writeFileSync(html, htmlContent);
+
+      console.log(`HTML created for article '${title}'`);
       resolve(article);
-    })
-  })
+    });
+  });
 }
 
-function clearArticlesFolder() {
-  if (!fs.existsSync(folderPath)) {
-    fs.mkdirSync(folderPath);
-  } else {
-    const files = fs.readdirSync(folderPath);
-    for (const file of files)
-      fs.unlinkSync(`${folderPath}/${file}`);
-
-  }
-}
-
-module.exports = createHtmlFiles;
+module.exports = toHtml;

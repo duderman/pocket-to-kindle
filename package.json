@@ -13,8 +13,11 @@
     "@sendgrid/mail": "^6.3.1",
     "axios": "^0.18.0",
     "dotenv": "^8.2.0",
+    "node-fetch": "^2.6.1",
     "node-readability": "^3.0.0",
     "promise.allsettled": "^1.0.2",
+    "read-art": "^0.5.6",
+    "uuid": "^8.3.1",
     "yargs": "^13.2.4"
   }
 }

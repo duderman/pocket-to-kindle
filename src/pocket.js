@@ -1,5 +1,6 @@
 const axios = require('axios');
 const { pocketConfig } = require('../config.js');
+const { FOLDER_PATH } = require("./consts.js");
 
 const BASE_URL = 'https://getpocket.com/v3'
 const FETCH_URL = `${BASE_URL}/get`;
@@ -19,12 +20,14 @@ async function getPocketArticles() {
 function buildArticle(article) {
   const title = article.resolved_title || generateTitle();
   const id = article.resolved_id;
+  const dir = `${FOLDER_PATH}/${id}`;
   return {
     id,
     title,
+    dir,
     url: article.resolved_url,
-    html: `${id}.html`,
-    mobi: `${id}.mobi`,
+    html: `${dir}/index.html`,
+    mobi: `${dir}/index.mobi`,
   };
 }
 
