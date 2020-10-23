@@ -24,8 +24,8 @@ async function main() {
       return console.log("All articles failed to convert :(");
     }
 
-    // await sendToKindle(convertedArticles);
-    // await markAsRead(convertedArticles);
+    await sendToKindle(convertedArticles);
+    await markAsRead(convertedArticles);
 
     console.log("All good :)\n\n");
   } catch (err) {
