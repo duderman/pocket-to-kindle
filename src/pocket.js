@@ -1,4 +1,5 @@
 const axios = require('axios');
+const slugify = require("slugify");
 const { pocketConfig } = require('../config.js');
 const { FOLDER_PATH } = require("./consts.js");
 
@@ -21,13 +22,14 @@ function buildArticle(article) {
   const title = article.resolved_title || generateTitle();
   const id = article.resolved_id;
   const dir = `${FOLDER_PATH}/${id}`;
+  const mobiFilename = slugify(title);
   return {
     id,
     title,
     dir,
     url: article.resolved_url,
     html: `${dir}/index.html`,
-    mobi: `${dir}/index.mobi`,
+    mobi: `${dir}/${mobiFilename}.mobi`,
   };
 }
 

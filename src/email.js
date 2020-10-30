@@ -25,7 +25,7 @@ function buildAttachment(article) {
   console.log(`Sending article '${title}' to Kindle`);
   const file = fs.readFileSync(mobi);
   const base64File = file.toString('base64');
-  return { content: base64File, filename: `${title}.mobi` };
+  return { content: base64File, filename: mobi };
 }
 
 module.exports = sendToKindle;
